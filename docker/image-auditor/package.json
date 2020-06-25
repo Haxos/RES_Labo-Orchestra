@@ -4,5 +4,8 @@
     "description": "",
     "main": "app.js",
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "dependencies": {
+        "uuid": "8.2.0"
+    }
 }
