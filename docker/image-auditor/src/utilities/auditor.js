@@ -23,6 +23,9 @@ export class Auditor {
 
     listen(port) {
         this.#tcpServer.listen(port);
+        this.#tcpServer.on('connection', (socket) => {
+            this.handleTcpConnection(socket);
+        });
     }
 
     handleSound(msg, rinfo) {
@@ -58,7 +61,6 @@ export class Auditor {
         // Add the musician to the list if is not already here
         if (!this.#activeMusicians.has(musician)) {
             this.#activeMusicians.set(musician, {
-                uuid: musician,
                 instrument: instrument,
                 activeSince: now,
             });
@@ -71,6 +73,24 @@ export class Auditor {
         setTimeout(() => {
             this.forgetMusicianIfInactive(musician);
         }, this.#forgetTimeout);
+    }
+
+    handleTcpConnection(socket) {
+        // Prepare the data
+        let activeMusicians = [];
+        this.#activeMusicians.forEach((musician, uuid) => {
+            activeMusicians.push({
+                uuid: uuid,
+                instrument: musician.instrument,
+                activeSince: musician.activeSince.format(),
+            });
+        });
+
+        // Send the list of active musicians to the client
+        socket.write(JSON.stringify(activeMusicians));
+
+        // Closes the TCP socket because nothing more will be exchanged
+        socket.end();
     }
 
     forgetMusicianIfInactive(uuid) {
