@@ -6,6 +6,7 @@ export class Musician {
     #socket;
     #type;
     #uuid;
+    #sound;
     #networkPort = 4411;
     #networkAddress = '255.255.255.255';
 
@@ -13,6 +14,7 @@ export class Musician {
         this.#type = type;
         this.#socket = dgram.createSocket('udp4');
         this.#uuid = uuid();
+        this.#sound = instruments.get(this.#type);
 
         let socket = this.#socket;
         this.#socket.bind(0, '', function () {
@@ -26,7 +28,7 @@ export class Musician {
         // Build the payload
         let message = Buffer.from(JSON.stringify({
             musician: uuid,
-            sound: instruments.get(this.#type)
+            sound: this.#sound
         }));
 
         this.#socket.send(
