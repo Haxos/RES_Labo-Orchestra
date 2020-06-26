@@ -5,6 +5,7 @@
     "main": "app.js",
     "author": "",
     "license": "ISC",
+    "type": "module",
     "dependencies": {
         "uuid": "8.2.0"
     }

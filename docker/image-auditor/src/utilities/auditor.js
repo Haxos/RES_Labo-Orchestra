@@ -1,16 +1,17 @@
+import * as dgram from 'dgram';
+import * as net from 'net';
+
 export class Auditor {
     #tcpServer;
     #socket;
 
     constructor() {
-        let net = require('net');
-        let dgram = require('dgram');
-
         this.#tcpServer = net.createServer();
         this.#socket = dgram.createSocket('udp4');
 
+        let socket = this.#socket;
         this.#socket.bind(0, '', function () {
-            this.#socket.setBroadcast(true);
+            socket.setBroadcast(true);
         });
     }
 
