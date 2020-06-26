@@ -36,7 +36,7 @@ export class Musician {
             this.#networkPort,
             this.#networkAddress,
             () => {
-                console.log('Musician ' + uuid + ' makes this sweet sound: ' + message);
+                console.log('Musician ' + uuid + ' makes this sweet sound: ' + message.sound);
             }
         );
     }
