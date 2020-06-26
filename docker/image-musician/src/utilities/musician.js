@@ -21,11 +21,18 @@ export class Musician {
     }
 
     play() {
-        let message = instruments.get(this.#type);
         let uuid = this.#uuid;
+        
+        // Build the payload
+        let message = Buffer.from(JSON.stringify({
+            musician: uuid,
+            sound: instruments.get(this.#type)
+        }));
 
         this.#socket.send(
-            [uuid, message],
+            message,
+            0,
+            message.length,
             this.#networkPort,
             this.#networkAddress,
             () => {
