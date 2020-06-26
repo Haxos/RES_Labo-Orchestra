@@ -6,8 +6,8 @@ export class Musician {
     #socket;
     #type;
     #uuid;
-    #port = 4411;
-    #network = '255.255.255.255';
+    #networkPort = 4411;
+    #networkAddress = '255.255.255.255';
 
     constructor(type) {
         this.#type = type;
@@ -24,12 +24,13 @@ export class Musician {
         let message = instruments.get(this.#type);
         let uuid = this.#uuid;
 
-        this.#socket.send([uuid, message], () => {
-            console.log('Musician ' + uuid + ' play ' + message);
-        });
-    }
-
-    start() {
-        this.#socket.connect(this.#port, this.#network);
+        this.#socket.send(
+            [uuid, message],
+            this.#networkPort,
+            this.#networkAddress,
+            () => {
+                console.log('Musician ' + uuid + ' makes this sweet sound: ' + message);
+            }
+        );
     }
 }

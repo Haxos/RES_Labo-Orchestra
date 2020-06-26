@@ -15,8 +15,6 @@ if (!instruments.has(process.argv[2])) {
 
 let musician = new Musician(process.argv[2]);
 
-musician.start();
-
 setInterval(function () {
     musician.play();
 }, 1000);
