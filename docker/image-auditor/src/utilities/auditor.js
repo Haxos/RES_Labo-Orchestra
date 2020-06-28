@@ -1,6 +1,6 @@
 import * as dgram from 'dgram';
-import * as net from 'net';
 import moment from 'moment';
+import * as net from 'net';
 import { sounds } from './sounds.js';
 
 export class Auditor {
@@ -13,7 +13,7 @@ export class Auditor {
     constructor(forgetTimeout) {
         this.#tcpServer = net.createServer();
         this.#forgetTimeout = forgetTimeout;
-        
+
         this.#socket = dgram.createSocket('udp4');
         this.#socket.bind(this.#udpPort);
         this.#socket.on('message', (msg, rinfo) => {
@@ -40,14 +40,17 @@ export class Auditor {
             musician = decodedMessage.musician;
             sound = decodedMessage.sound;
             instrument = sounds.get(decodedMessage.sound);
-        }
-        catch (e) {
-            console.log('Headed some noise that doesn\'t look like music: ' + msg);
+        } catch (e) {
+            console.log(
+                "Headed some noise that doesn't look like music: " + msg
+            );
             return;
         }
 
         if (!instrument) {
-            console.log('Don\'t know any instrument making that sound: ' + sound);
+            console.log(
+                "Don't know any instrument making that sound: " + sound
+            );
             return;
         }
 
@@ -103,7 +106,7 @@ export class Auditor {
         let deleteIfBelow = moment().subtract(this.#forgetTimeout, 'ms');
 
         if (musician.activeAt <= deleteIfBelow) {
-            console.log('Didn\'t heared ' + uuid + ' recently, forgetting');
+            console.log("Didn't heared " + uuid + ' recently, forgetting');
             this.#activeMusicians.delete(uuid);
         }
     }

@@ -24,12 +24,14 @@ export class Musician {
 
     play() {
         let uuid = this.#uuid;
-        
+
         // Build the payload
-        let message = Buffer.from(JSON.stringify({
-            musician: uuid,
-            sound: this.#sound
-        }));
+        let message = Buffer.from(
+            JSON.stringify({
+                musician: uuid,
+                sound: this.#sound,
+            })
+        );
 
         this.#socket.send(
             message,
@@ -38,7 +40,12 @@ export class Musician {
             this.#networkPort,
             this.#networkAddress,
             () => {
-                console.log('Musician ' + uuid + ' makes this sweet sound: ' + message.sound);
+                console.log(
+                    'Musician ' +
+                        uuid +
+                        ' makes this sweet sound: ' +
+                        message.sound
+                );
             }
         );
     }
